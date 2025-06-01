@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minecraft-server
+  namespace: minecraft
+  labels:
+    app: minecraft
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft
+  template:
+    metadata:
+      labels:
+        app: minecraft
+    spec:
+      containers:
+      - name: minecraft
+        image: itzg/minecraft-server:latest
+        env:
+        - name: EULA
+          value: "TRUE"
+        - name: TYPE
+          value: "VANILLA" # или "PAPER", "SPIGOT" и т.д.
+        - name: VERSION
+          value: "LATEST" # или конкретная версия, например "1.20.1"
+        ports:
+        - containerPort: 25565
+          name: minecraft
+        volumeMounts:
+        - mountPath: /data
+          name: minecraft-data
+      volumes:
+      - name: minecraft-data
+        persistentVolumeClaim:
+          claimName: minecraft-pvc
