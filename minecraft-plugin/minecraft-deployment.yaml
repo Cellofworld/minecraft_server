@@ -19,27 +19,37 @@ spec:
         - name: EULA
           value: "TRUE"
         - name: TYPE
-          value: "CURSEFORGE"  # Для загрузки модпаков
-        - name: MODPACK_URL
-          value: "https://api.modpacks.ch/public/modpack/67/790/server/linux"  # SkyFactory 3 Server Pack
+          value: "FTBA"  # Исправлено с CURSEFORGE на FTBA для FTB-модпаков
+        - name: FTB_SERVER_MOD  # Ключевое изменение: заменяем MODPACK_URL
+          value: "https://api.modpacks.ch/public/modpack/67/790/server/linux"  # SkyFactory 3
         - name: VERSION
           value: "1.12.2"
         - name: MEMORY
-          value: "2G"  # Минимум 2 ГБ (рекомендуется 3G для комфортной игры)
+          value: "3G"  # Увеличено с 2G для стабильности
         - name: MAX_MEMORY
-          value: "3G"
+          value: "4G"
         - name: JVM_XX_OPTS
-          value: "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=100 -XX:MaxRAMPercentage=75"
-          value: "Мир 2"    # Название сервера
+          value: "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=100 -XX:MaxRAMPercentage=80"
+        - name: SERVER_NAME
+          value: "SkyFactory 3"
         - name: MOTD
-          value: "Добро пожаловать на второй сервер!"
+          value: "Добро пожаловать на SkyFactory 3!"
+        - name: ENABLE_AUTOPAUSE
+          value: "true"  # Автопауза при отсутствии игроков
         ports:
         - containerPort: 25565
           name: minecraft
         volumeMounts:
         - mountPath: /data
           name: minecraft-data
+        resources:
+          requests:
+            memory: "3Gi"
+            cpu: "1"
+          limits:
+            memory: "4Gi"
+            cpu: "2"
       volumes:
       - name: minecraft-data
         persistentVolumeClaim:
-          claimName: minecraft-data-2  # Используем новый PVC
+          claimName: minecraft-data-2
