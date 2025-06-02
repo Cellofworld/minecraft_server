@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: minecraft-service-2
+spec:
+  type: NodePort  # Или LoadBalancer, если есть Ingress
+  selector:
+    app: minecraft-2
+  ports:
+    - protocol: TCP
+      port: 25565
+      targetPort: 25565
+      nodePort: 30002  # Должен быть уникальным (30000-32767)

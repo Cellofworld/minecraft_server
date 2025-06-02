@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minecraft-server-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft-2
+  template:
+    metadata:
+      labels:
+        app: minecraft-2
+    spec:
+      containers:
+      - name: minecraft
+        image: itzg/minecraft-server:latest
+        env:
+        - name: EULA
+          value: "TRUE"
+        - name: TYPE
+          value: "CURSEFORGE"  # Для загрузки модпаков
+        - name: MODPACK_URL
+          value: "https://api.modpacks.ch/public/modpack/67/790/server/linux"  # SkyFactory 3 Server Pack
+        - name: VERSION
+          value: "1.12.2"
+        - name: MEMORY
+          value: "2G"  # Минимум 2 ГБ (рекомендуется 3G для комфортной игры)
+        - name: MAX_MEMORY
+          value: "3G"
+        - name: JVM_XX_OPTS
+          value: "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=100 -XX:MaxRAMPercentage=75"
+          value: "Мир 2"    # Название сервера
+        - name: MOTD
+          value: "Добро пожаловать на второй сервер!"
+        ports:
+        - containerPort: 25565
+          name: minecraft
+        volumeMounts:
+        - mountPath: /data
+          name: minecraft-data
+      volumes:
+      - name: minecraft-data
+        persistentVolumeClaim:
+          claimName: minecraft-data-2  # Используем новый PVC
