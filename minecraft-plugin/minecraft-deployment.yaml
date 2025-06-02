@@ -19,29 +19,38 @@ spec:
         - name: EULA
           value: "TRUE"
         - name: TYPE
-          value: "FTBA"  # Для FTB-модпаков
-        - name: FTB_MODPACK_ID  # Обязательный параметр для FTBA
-          value: "123"  # ID модпака SkyFactory 3
+          value: "FTBA"
+        - name: FTB_MODPACK_ID
+          value: "25"  # Updated Pack ID
         - name: FTB_MODPACK_VERSION_ID
-          value: "25"  # ID версии модпака
+          value: "123"  # Updated Version ID
         - name: VERSION
-          value: "3.0.21"
+          value: "1.12.2"  # Adjust if your modpack uses different version
         - name: MEMORY
-          value: "3G"
+          value: "4G"  # Recommended minimum for most FTB packs
         - name: MAX_MEMORY
-          value: "4G"
+          value: "6G"
         - name: JVM_XX_OPTS
-          value: "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=100"
+          value: "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=100 -XX:MaxRAMPercentage=80"
         - name: SERVER_NAME
-          value: "SkyFactory 3"
+          value: "FTB Modpack Server"
         - name: MOTD
-          value: "Добро пожаловать на SkyFactory 3!"
+          value: "Welcome to FTB Modpack!"
+        - name: ENABLE_AUTOPAUSE
+          value: "true"
         ports:
         - containerPort: 25565
           name: minecraft
         volumeMounts:
         - mountPath: /data
           name: minecraft-data
+        resources:
+          requests:
+            memory: "4Gi"
+            cpu: "1"
+          limits:
+            memory: "6Gi"
+            cpu: "2"
       volumes:
       - name: minecraft-data
         persistentVolumeClaim:
